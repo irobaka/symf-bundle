@@ -1,0 +1,22 @@
+base:
+    title: 'Welcome to the SpaceBar'
+    language: Language
+    search_label: Search
+    search_placeholder: Search
+    local_asteroids: 'Local Asteroids'
+    footer: 'Made with %heart% by the guys and gals at %link%'
+    weather: Weather
+    journal: Journal
+article:
+    index:
+        slogan: 'Your source for the latest news and trends from around the galaxy'
+        trending_quotes: 'Trending Quotes'
+        ad:
+            buy: 'Buy Now'
+            ice_cream:
+                tag: 'New Flavor'
+                title: 'Space Ice Cream'
+    show:
+        title: 'Read: %title%'
+        share: Share
+        comments: '1 Comment|%count% Comments'

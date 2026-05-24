@@ -1,0 +1,37 @@
+@import "tailwindcss";
+@import url('font-awesome.css');
+
+body {
+    background-color: #2D1E79;
+    font-family: "Rubik", sans-serif;
+}
+
+.article-text h2 {
+    font-size: 42px;
+    font-weight: 500;
+    margin-top: 15px;
+}
+
+.article-text {
+    p, ul, li {
+        font-size: 18px;
+    }
+}
+
+.article-text p {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.article-text ul {
+    list-style-type: disc;
+}
+
+.article-text li {
+    margin-left: 30px;
+}
+
+.article-text hr {
+    padding-bottom: 20px;
+    margin-top: 20px;
+}

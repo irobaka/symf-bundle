@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="{{ app.locale }}">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}{{ 'base.title'|trans }}{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        <script src="https://kit.fontawesome.com/8065240ddb.js" crossorigin="anonymous"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300..900&display=swap" rel="stylesheet">
+        {% block stylesheets %}
+        {% endblock %}
+
+        {% block javascripts %}
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
+        {% endblock %}
+    </head>
+    <body class="bg-[url('../images/bg-planet.png')] bg-contain bg-no-repeat">
+        <nav class="flex items-center justify-between flex-wrap py-6 mx-auto px-4">
+            <div class="flex items-end flex-shrink-0 mr-6 text-white">
+                <a href="{{ path('app_homepage') }}" class="font-semibold text-xl tracking-tight">
+                    <img class="max-h-[45px]" src="{{ asset('images/spacebar-logo.png') }}" alt="Spacebar Logo">
+                </a>
+                <a href="#" class="hidden ml-4 mt-4 lg:inline-block lg:mt-0 hover:text-[#5BA8DC] mr-4">{{ 'base.local_asteroids'|trans }}</a>
+                <a href="#" class="hidden ml-4 mt-4 lg:inline-block lg:mt-0 hover:text-[#5BA8DC] mr-4">{{ 'base.weather'|trans }}</a>
+                <a href="#" class="hidden ml-4 mt-4 lg:inline-block lg:mt-0 hover:text-[#5BA8DC] mr-4">{{ 'base.journal'|trans }}</a>
+            </div>
+            <div class="flex items-center">
+                <div
+                    data-controller="dropdown"
+                    class="mx-auto mr-2 relative"
+                >
+                    <a
+                        href="#"
+                        class="block w-full py-2 px-3 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        data-action="dropdown#toggle click@window->dropdown#hide keydown.esc@window->dropdown#hide"
+                    >
+                        <span class="text-gray-400">{{ 'base.language'|trans }}</span>
+                        <strong class="ml-1 uppercase">{{ app.locale }}</strong>
+                        <i class="ml-1 fa-solid fa-chevron-down text-gray-400"></i>
+                    </a>
+                    <ul
+                        hidden
+                        data-dropdown-target="content"
+                        class="absolute overflow-hidden z-10 right-0 mt-1 w-full text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                    >
+                        {% for locale in app.enabled_locales %}
+                            {% if locale != app.locale %}
+                                <li class="uppercase hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm">
+                                    <a class="block" href="{{ path(app.current_route, app.current_route_parameters|merge({_locale: locale})) }}">{{ locale }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <form class="max-w-md mx-auto mr-1.5">
+                    <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">{{ 'base.search_label'|trans }}</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-900" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                            </svg>
+                        </div>
+                        <input type="search" id="default-search" class="block w-full p-4 ps-10 text-sm text-gray-900 rounded-[40px] bg-white focus:ring-blue-500 focus:border-blue-500 " placeholder="{{ 'base.search_placeholder'|trans }}" required />
+                    </div>
+                </form>
+                <div class="hidden lg:inline-block">
+                    <button class="py-2">
+                        <img class="h-14 w-14" src="{{ asset('images/profile-img.png') }}">
+                    </button>
+                </div>
+
+                <a href="#" class="text-white hover:text-gray-300 inline-block lg:hidden"><i class="ml-2 fa-solid fa-bars text-4xl "></i></a>
+
+            </div>
+        </nav>
+        <div class="max-w-7xl px-5 mx-auto">
+            {% block body %}{% endblock %}
+        </div>
+        <footer class="py-8">
+            <div class="text-white text-center">
+                {{ 'base.footer'|trans({'%heart%': '<i class="fa fa-heart text-red-600"></i>', '%link%': '<a class="underline text-[#0286C4]" href="https://symfonycasts.com">SymfonyCasts</a>'})|raw }}
+            </div>
+        </footer>
+    </body>
+</html>

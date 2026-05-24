@@ -1,0 +1,22 @@
+base:
+    title: "Bienvenue dans la barre d'espacement"
+    language: Langue
+    search_label: Chercher
+    search_placeholder: Chercher
+    local_asteroids: 'Astéroïdes locaux'
+    footer: 'Fabriqué à partir de %heart% par les gars et les gaux à %link%'
+    weather: Météo
+    journal: Quotidien
+article:
+    index:
+        slogan: 'Votre source des dernières nouvelles et tendances de la galaxie'
+        trending_quotes: 'Devis tendances'
+        ad:
+            buy: 'Acheter maintenant'
+            ice_cream:
+                tag: 'Nouveau parfum'
+                title: 'Glace Spatiale'
+    show:
+        title: 'Lecture : %title%'
+        share: Partager
+        comments: '1 commentaire| Commentaires %count%'

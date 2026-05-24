@@ -1,0 +1,22 @@
+base:
+    title: 'Bienvenido a la barra espaciadora'
+    language: Idioma
+    search_label: Buscar
+    search_placeholder: Buscar
+    local_asteroids: 'Asteroides locales'
+    footer: 'Hecho con %heart% por los chicos y gales en %link%'
+    weather: Clima
+    journal: Diario
+article:
+    index:
+        slogan: 'Su fuente de las últimas noticias y tendencias de alrededor de la galaxia'
+        trending_quotes: 'Citas populares'
+        ad:
+            buy: 'Comprar ahora'
+            ice_cream:
+                tag: 'Nuevo sabor'
+                title: 'Helado espacial'
+    show:
+        title: 'Leído: %title%'
+        share: Compartir
+        comments: '1 comentario|%count% comentarios'
