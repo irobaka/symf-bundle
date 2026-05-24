@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b6fb991a6b9cf87c0880c56145ea586b",
+    "content-hash": "aca132d236e2ea10e478f54139f9445d",
     "packages": [
         {
             "name": "composer/semver",
@@ -1820,6 +1820,34 @@
                 "source": "https://github.com/php-fig/log/tree/3.0.2"
             },
             "time": "2024-09-11T13:17:53+00:00"
+        },
+        {
+            "name": "symfon/object-translation-bundle",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "object-translation-bundle",
+                "reference": "82acb321e0e392ee4a634c1c715a2bf3855d6418"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Symfon\\ObjectTranslationBundle\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Grzegorz Majta",
+                    "email": "grzegorz.majta@gmail.com"
+                }
+            ],
+            "description": "Translate your entities",
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "symfony/asset",
@@ -8812,7 +8840,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": {
+        "symfon/object-translation-bundle": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

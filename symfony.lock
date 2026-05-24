@@ -50,6 +50,9 @@
             "tests/bootstrap.php"
         ]
     },
+    "symfon/object-translation-bundle": {
+        "version": "dev-master"
+    },
     "symfony/asset-mapper": {
         "version": "7.3",
         "recipe": {
