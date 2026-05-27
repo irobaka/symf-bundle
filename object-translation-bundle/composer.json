@@ -8,6 +8,11 @@
             "Symfon\\ObjectTranslationBundle\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Symfon\\ObjectTranslationBundle\\Tests": "tests/"
+        }
+    },
     "authors": [
         {
             "name": "Grzegorz Majta",

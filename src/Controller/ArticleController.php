@@ -4,13 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Repository\ArticleRepository;
+use Symfon\ObjectTranslationBundle\ObjectTranslator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class ArticleController extends AbstractController
 {
-    #[Route('/', name: 'app_homepage')]
+    #[Route('/{_locale}', name: 'app_homepage', defaults: ['_locale' => 'en'])]
     public function index(
         ArticleRepository $articles,
     ): Response {
@@ -19,9 +20,13 @@ final class ArticleController extends AbstractController
         ]);
     }
 
-    #[Route('/news/{slug:article}', name: 'app_article_show')]
-    public function show(Article $article): Response
-    {
+    #[Route('{_locale}/news/{slug:article}', name: 'app_article_show', defaults: ['_locale' => 'en'])]
+    public function show(
+        Article $article,
+        ObjectTranslator $translator,
+    ): Response {
+        $article = $translator->translate($article);
+
         return $this->render('article/show.html.twig', [
             'article' => $article,
             'comments' => [
