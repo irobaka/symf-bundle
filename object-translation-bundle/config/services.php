@@ -12,7 +12,8 @@ return static function (ContainerConfigurator $configurator){
         ->args([
             service('translation.locale_switcher'),
             param('kernel.default_locale'),
-            abstract_arg('Translation class')
+            abstract_arg('Translation class'),
+            service('doctrine'),
         ])
         ->alias(ObjectTranslator::class, 'symfon.object_translator');
 };
