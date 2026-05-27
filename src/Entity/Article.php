@@ -7,8 +7,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfon\ObjectTranslationBundle\Mapping\Translatable;
+use Symfon\ObjectTranslationBundle\Mapping\TranslatableProperty;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
+#[Translatable('article')]
 class Article
 {
     #[ORM\Id]
@@ -20,6 +23,7 @@ class Article
     private ?string $slug = null;
 
     #[ORM\Column(length: 255)]
+    #[TranslatableProperty]
     private ?string $title = null;
 
     #[ORM\Column]
@@ -29,6 +33,7 @@ class Article
     private ?string $author = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[TranslatableProperty]
     private ?string $content = null;
 
     #[ORM\ManyToOne(inversedBy: 'articles')]

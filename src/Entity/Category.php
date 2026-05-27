@@ -6,8 +6,11 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfon\ObjectTranslationBundle\Mapping\Translatable;
+use Symfon\ObjectTranslationBundle\Mapping\TranslatableProperty;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
+#[Translatable('category')]
 class Category
 {
     #[ORM\Id]
@@ -16,6 +19,7 @@ class Category
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[TranslatableProperty]
     private ?string $name = null;
 
     /**

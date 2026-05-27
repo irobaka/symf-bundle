@@ -5,6 +5,7 @@ namespace App\Story;
 use App\Factory\ArticleFactory;
 use App\Factory\CategoryFactory;
 use App\Factory\TagFactory;
+use App\Factory\TranslationFactory;
 use Zenstruck\Foundry\Attribute\AsFixture;
 use Zenstruck\Foundry\Story;
 
@@ -20,7 +21,7 @@ final class AppStory extends Story
         $science = TagFactory::createOne(['name' => 'science']);
         $time = TagFactory::createOne(['name' => 'time']);
 
-        ArticleFactory::createOne([
+        $article1 = ArticleFactory::createOne([
             'title' => 'Why Asteroids Taste Like Bacon',
             'slug' => 'asteroid',
             'author' => 'Mike Ferengi',
@@ -64,6 +65,22 @@ final class AppStory extends Story
 
             *Disclaimer: Please do not lick meteorites. Your taste buds (and doctor) will thank you.*
             EOF,
+        ]);
+
+        TranslationFactory::createOne([
+            'locale' => 'fr',
+            'objectId' => $article1->getId(),
+            'objectType' => 'article',
+            'field' => 'title',
+            'value' => 'French title ...'
+        ]);
+
+        TranslationFactory::createOne([
+            'locale' => 'fr',
+            'objectId' => $article1->getId(),
+            'objectType' => 'article',
+            'field' => 'content',
+            'value' => 'French content ...'
         ]);
 
         ArticleFactory::createOne([
