@@ -34,18 +34,24 @@ final class ObjectTranslator
      * @param  T  $object
      * @return T
      */
-    public function translate(object $object): object
+    public function translate(object $object, ?string $locale = null, array $options = []): object
     {
-        $locale = $this->localeAware->getLocale();
+        $locale = $locale ?? $this->localeAware->getLocale();
 
         if ($this->defaultLocale === $locale) {
             return $object;
         }
 
-        return $this->translatedObjects[$object] ??= new TranslatedObject($object, $this->translationsFor($object, $locale));
+        return $this->translatedObjects[$object] ??= new TranslatedObject(
+            $object, $this->translationsFor(
+            object: $object,
+            locale: $locale,
+            forceRefresh: $options['force_refresh'] ?? false,
+        ),
+        );
     }
 
-    private function translationsFor(object $object, string $locale): array
+    private function translationsFor(object $object, string $locale, bool $forceRefresh): array
     {
         $type = $this->mappingManager->translatableTypeFor($object);
         $id = $this->mappingManager->idFor($object);
@@ -63,6 +69,7 @@ final class ObjectTranslator
 
                 return $this->mappingManager->translationsFor($locale, $type, $id);
             },
+            $forceRefresh ? INF : null,
         );
     }
 

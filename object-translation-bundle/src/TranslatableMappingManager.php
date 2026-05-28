@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Symfon\ObjectTranslationBundle;
 
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\Proxy;
 use ReflectionClass;
 use Symfon\ObjectTranslationBundle\Mapping\Translatable;
 use Symfon\ObjectTranslationBundle\Model\Translation;
@@ -22,7 +23,12 @@ final class TranslatableMappingManager
     public function translatableTypeFor(object $object): string
     {
         $class = new ReflectionClass($object);
-        $type = $class->getAttributes(Translatable::class)[0]?->newInstance()->name ?? null;
+
+        if ($class->implementsInterface(Proxy::class)) {
+            $class = $class->getParentClass();
+        }
+
+        $type = ($class->getAttributes(Translatable::class)[0] ?? null)?->newInstance()->name ?? null;
 
         if ( ! $type) {
             throw new \LogicException(sprintf('Class "%s" is not translatable.', $object::class));
@@ -63,5 +69,20 @@ final class TranslatableMappingManager
         }
 
         return $translationValues;
+    }
+
+    public function allTranslatableObjects(): iterable
+    {
+        foreach ($this->doctrine->getManagers() as $om) {
+            foreach ($om->getMetadataFactory()->getAllMetadata() as $metadata) {
+                $class = $metadata->getName();
+
+                if ( ! new ReflectionClass($class)->getAttributes(Translatable::class)) {
+                    continue;
+                }
+
+                yield from $this->doctrine->getRepository($class)->findAll();
+            }
+        }
     }
 }

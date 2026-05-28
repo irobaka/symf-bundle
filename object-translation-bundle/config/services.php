@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Symfon\ObjectTranslationBundle\ObjectTranslationWarmupCommand;
 use Symfon\ObjectTranslationBundle\ObjectTranslator;
 use Symfon\ObjectTranslationBundle\TranslatableMappingManager;
 use Symfon\ObjectTranslationBundle\Twig\ObjectTranslatorExtension;
@@ -26,6 +27,15 @@ return static function (ContainerConfigurator $configurator) {
             abstract_arg('Translation class'),
             service('doctrine'),
         ])
+
+        ->set('.symfon.object_translator.warmup_command', ObjectTranslationWarmupCommand::class)
+        ->args([
+            service('symfon.object_translator'),
+            service('.symfon.object_translator.mapping_manager'),
+            service('translation.locale_switcher'),
+            param('kernel.enabled_locales'),
+        ])
+        ->tag('console.command')
 
         ->set('.symfon.object_translator.twig_extension', ObjectTranslatorExtension::class)
         ->tag('twig.extension')
