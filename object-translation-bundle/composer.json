@@ -10,7 +10,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Symfon\\ObjectTranslationBundle\\Tests": "tests/"
+            "Symfon\\ObjectTranslationBundle\\Tests\\": "tests/"
         }
     },
     "authors": [
@@ -19,5 +19,15 @@
             "email": "grzegorz.majta@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "symfony/framework-bundle": "^8.0",
+        "symfony/translation": "^8.0",
+        "doctrine/doctrine-bundle": "^3.2",
+        "doctrine/orm": "^3.6"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^13.1",
+        "symfony/phpunit-bridge": "^8.0",
+        "zenstruck/foundry": "^2.10"
+    }
 }

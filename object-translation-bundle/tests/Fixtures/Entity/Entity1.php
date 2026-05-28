@@ -1,10 +1,10 @@
 <?php
 
-namespace SymfonyCasts\ObjectTranslationBundle\Tests\Fixture\Entity;
+namespace Symfon\ObjectTranslationBundle\Tests\Fixtures\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use SymfonyCasts\ObjectTranslationBundle\Mapping\Translatable;
-use SymfonyCasts\ObjectTranslationBundle\Mapping\TranslatableProperty;
+use Symfon\ObjectTranslationBundle\Mapping\Translatable;
+use Symfon\ObjectTranslationBundle\Mapping\TranslatableProperty;
 
 #[Translatable('entity1')]
 #[ORM\Entity]
