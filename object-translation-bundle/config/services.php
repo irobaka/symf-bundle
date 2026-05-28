@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Symfon\ObjectTranslationBundle\Command\ObjectTranslationExportCommand;
+use Symfon\ObjectTranslationBundle\Command\ObjectTranslationImportCommand;
 use Symfon\ObjectTranslationBundle\Command\ObjectTranslationWarmupCommand;
 use Symfon\ObjectTranslationBundle\ObjectTranslator;
 use Symfon\ObjectTranslationBundle\TranslatableMappingManager;
@@ -34,6 +36,18 @@ return static function (ContainerConfigurator $configurator) {
             service('.symfon.object_translator.mapping_manager'),
             service('translation.locale_switcher'),
             param('kernel.enabled_locales'),
+        ])
+        ->tag('console.command')
+
+        ->set('.symfon.object_translator.export_command', ObjectTranslationExportCommand::class)
+        ->args([
+            service('.symfon.object_translator.mapping_manager'),
+        ])
+        ->tag('console.command')
+
+        ->set('.symfon.object_translator.import_command', ObjectTranslationImportCommand::class)
+        ->args([
+            service('.symfon.object_translator.mapping_manager'),
         ])
         ->tag('console.command')
 

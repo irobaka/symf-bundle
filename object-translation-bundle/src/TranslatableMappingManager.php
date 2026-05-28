@@ -8,6 +8,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\Proxy;
 use ReflectionClass;
 use Symfon\ObjectTranslationBundle\Mapping\Translatable;
+use Symfon\ObjectTranslationBundle\Mapping\TranslatableProperty;
 use Symfon\ObjectTranslationBundle\Model\Translation;
 
 /**
@@ -84,5 +85,44 @@ final class TranslatableMappingManager
                 yield from $this->doctrine->getRepository($class)->findAll();
             }
         }
+    }
+
+    public function translatableValuesFor(object $object): iterable
+    {
+        $class = new ReflectionClass($object);
+
+        foreach ($class->getProperties() as $property) {
+            if ( ! $property->getAttributes(TranslatableProperty::class)) {
+                continue;
+            }
+
+            yield $property->getName() => $property->getValue($object);
+        }
+    }
+
+    public function upsert(string $type, string $id, string $locale, string $field, string $value): void
+    {
+        $om = $this->doctrine->getManagerForClass($this->translationClass);
+
+        $translation = $om->getRepository($this->translationClass)->findOneBy([
+            'objectType' => $type,
+            'objectId' => $id,
+            'locale' => $locale,
+            'field' => $field,
+        ]);
+
+        if ( ! $translation) {
+            /** @var Translation $translation */
+            $translation = new $this->translationClass();
+            $translation->objectType = $type;
+            $translation->objectId = $id;
+            $translation->locale = $locale;
+            $translation->field = $field;
+        }
+
+        $translation->value = $value;
+
+        $om->persist($translation);
+        $om->flush();
     }
 }

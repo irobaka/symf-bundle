@@ -9,12 +9,10 @@ use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
-use WeakMap;
 
 final class ObjectTranslator
 {
     private CacheInterface $cache;
-    private WeakMap $translatedObjects;
 
     public function __construct(
         private LocaleAwareInterface $localeAware,
@@ -24,7 +22,6 @@ final class ObjectTranslator
         private ?int $cacheTtl = null,
     ) {
         $this->cache = $cache ?? new NullAdapter();
-        $this->translatedObjects = new WeakMap();
     }
 
 
@@ -42,7 +39,7 @@ final class ObjectTranslator
             return $object;
         }
 
-        return $this->translatedObjects[$object] ??= new TranslatedObject(
+        return new TranslatedObject(
             $object, $this->translationsFor(
             object: $object,
             locale: $locale,

@@ -1,6 +1,6 @@
 <?php
 
-namespace SymfonyCasts\ObjectTranslationBundle\Command;
+namespace Symfon\ObjectTranslationBundle\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use SymfonyCasts\ObjectTranslationBundle\TranslatableMappingManager;
+use Symfon\ObjectTranslationBundle\TranslatableMappingManager;
 
 /**
  * @internal
