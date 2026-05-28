@@ -20,31 +20,32 @@ final class ObjectTranslationBundle extends AbstractBundle
     {
         $definition
             ->rootNode()
-            ->children()
-            ->stringNode('translation_class')
-            ->info("The class name of your translation entity")
-            ->example('App\Entity\Translation')
-            ->isRequired()
-            ->cannotBeEmpty()
-            ->validate()
-            ->ifTrue(fn($v) => ! is_a($v, Translation::class, true))
-            ->thenInvalid('The translation class %s must extend Symfon\ObjectTranslationBundle\Model\Translation class')
-            ->end()
-            ->end()
-            ->arrayNode('cache')
-            ->info("Cache settings for object translations")
-            ->canBeDisabled()
-            ->children()
-            ->stringNode('pool')
-            ->info('The cache pool to use for storing object translations')
-            ->defaultValue('cache.app')
-            ->end()
-            ->integerNode('ttl')
-            ->info('The number of seconds to store object translations, null for no expiration')
-            ->defaultValue(null)
-            ->end()
-            ->end()
-            ->end()
+                ->children()
+                    ->scalarNode('translation_class')
+                        ->info("The class name of your translation entity")
+                        ->example('App\Entity\Translation')
+                        ->isRequired()
+                        ->cannotBeEmpty()
+                        ->validate()
+                            ->ifTrue(fn($v) => ! is_a($v, Translation::class, true))
+                            ->thenInvalid('The translation class %s must extend Symfon\ObjectTranslationBundle\Model\Translation class')
+                        ->end()
+                    ->end()
+                    ->arrayNode('cache')
+                        ->info("Cache settings for object translations")
+                        ->canBeDisabled()
+                        ->children()
+                            ->stringNode('pool')
+                                ->info('The cache pool to use for storing object translations')
+                                ->defaultValue('cache.app')
+                            ->end()
+                            ->integerNode('ttl')
+                                ->info('The number of seconds to store object translations, null for no expiration')
+                                ->defaultValue(null)
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
     }
 
@@ -61,13 +62,15 @@ final class ObjectTranslationBundle extends AbstractBundle
     {
         $configurator->import('../config/services.php');
 
-        $definition = $container->getDefinition('symfon.object_translator');
-
-        $definition->setArgument(2, $config['translation_class']);
+        $objectTranslatorDefinition = $container->getDefinition('symfon.object_translator');
 
         if ($config['cache']['enabled']) {
-            $definition->setArgument(4, new Reference($config['cache']['pool']));
-            $definition->setArgument(5, $config['cache']['ttl']);
+            $objectTranslatorDefinition->setArgument(3, new Reference($config['cache']['pool']));
+            $objectTranslatorDefinition->setArgument(4, $config['cache']['ttl']);
         }
+
+        $mappingManagerDefinition = $container->getDefinition('.symfon.object_translator.mapping_manager');
+
+        $mappingManagerDefinition->setArgument(0, $config['translation_class']);
     }
 }

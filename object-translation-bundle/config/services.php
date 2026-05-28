@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Symfon\ObjectTranslationBundle\ObjectTranslator;
+use Symfon\ObjectTranslationBundle\TranslatableMappingManager;
 use Symfon\ObjectTranslationBundle\Twig\ObjectTranslatorExtension;
 
 return static function (ContainerConfigurator $configurator) {
@@ -14,12 +15,17 @@ return static function (ContainerConfigurator $configurator) {
         ->args([
             service('translation.locale_switcher'),
             param('kernel.default_locale'),
-            abstract_arg('Translation class'),
-            service('doctrine'),
+            service('.symfon.object_translator.mapping_manager')
         ])
         ->tag('twig.runtime')
         ->alias(ObjectTranslator::class, 'symfon.object_translator')
 
+
+        ->set('.symfon.object_translator.mapping_manager', TranslatableMappingManager::class)
+        ->args([
+            abstract_arg('Translation class'),
+            service('doctrine'),
+        ])
 
         ->set('.symfon.object_translator.twig_extension', ObjectTranslatorExtension::class)
         ->tag('twig.extension')

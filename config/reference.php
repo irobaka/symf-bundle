@@ -1191,7 +1191,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     controllers_json?: scalar|Param|null, // Default: "%kernel.project_dir%/assets/controllers.json"
  * }
  * @psalm-type SymfonObjectTranslationConfig = array{
- *     translation_class?: string|Param, // The class name of your translation entity
+ *     translation_class?: scalar|Param|null, // The class name of your translation entity
  *     cache?: bool|array{ // Cache settings for object translations
  *         enabled?: bool|Param, // Default: true
  *         pool?: string|Param, // The cache pool to use for storing object translations // Default: "cache.app"
