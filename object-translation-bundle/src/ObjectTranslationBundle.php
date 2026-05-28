@@ -21,7 +21,7 @@ final class ObjectTranslationBundle extends AbstractBundle
         $definition
             ->rootNode()
                 ->children()
-                    ->scalarNode('translation_class')
+                    ->stringNode('translation_class')
                         ->info("The class name of your translation entity")
                         ->example('App\Entity\Translation')
                         ->isRequired()
