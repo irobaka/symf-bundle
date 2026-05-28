@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Symfon\ObjectTranslationBundle;
+namespace Symfon\ObjectTranslationBundle\Command;
 
+use Symfon\ObjectTranslationBundle\ObjectTranslator;
+use Symfon\ObjectTranslationBundle\TranslatableMappingManager;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

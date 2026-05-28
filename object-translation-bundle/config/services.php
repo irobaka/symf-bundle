@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Symfon\ObjectTranslationBundle\ObjectTranslationWarmupCommand;
+use Symfon\ObjectTranslationBundle\Command\ObjectTranslationWarmupCommand;
 use Symfon\ObjectTranslationBundle\ObjectTranslator;
 use Symfon\ObjectTranslationBundle\TranslatableMappingManager;
 use Symfon\ObjectTranslationBundle\Twig\ObjectTranslatorExtension;
