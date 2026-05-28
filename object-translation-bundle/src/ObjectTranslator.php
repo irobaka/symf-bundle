@@ -8,16 +8,29 @@ use Doctrine\Persistence\ManagerRegistry;
 use ReflectionClass;
 use Symfon\ObjectTranslationBundle\Mapping\Translatable;
 use Symfon\ObjectTranslationBundle\Model\Translation;
+use Symfony\Component\Cache\Adapter\NullAdapter;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
+use WeakMap;
 
 final class ObjectTranslator
 {
+    private CacheInterface $cache;
+    private WeakMap $translatedObjects;
+
     public function __construct(
         private LocaleAwareInterface $localeAware,
         private string $defaultLocale,
         private string $translationClass,
         private ManagerRegistry $doctrine,
-    ) {}
+        ?CacheInterface $cache = null,
+        private ?int $cacheTtl = null
+    ) {
+        $this->cache = $cache ?? new NullAdapter();
+        $this->translatedObjects = new WeakMap();
+    }
 
 
     /**
@@ -34,7 +47,7 @@ final class ObjectTranslator
             return $object;
         }
 
-        return new TranslatedObject($object, $this->translationsFor($object, $locale));
+        return $this->translatedObjects[$object] ??= new TranslatedObject($object, $this->translationsFor($object, $locale));
     }
 
     private function translationsFor(object $object, string $locale): array
@@ -47,7 +60,7 @@ final class ObjectTranslator
         }
 
         $om = $this->doctrine->getManagerForClass($object::class);
-        if (!$om) {
+        if ( ! $om) {
             throw new \LogicException(sprintf('No object manager found for class "%s"', $object::class));
         }
 
@@ -59,21 +72,34 @@ final class ObjectTranslator
 
         $id = array_first($id);
 
+        return $this->cache->get(
+            sprintf('object_translation.%s.%s.%s', $locale, $type, $id),
+            function (ItemInterface $item) use ($locale, $type, $id) {
+                if ($this->cache instanceof TagAwareCacheInterface) {
+                    $item->tag(['object-translation', "object-translation-$type"]);
+                }
 
-        /** @var Translation[] $translations */
-        $translations = $this->doctrine->getRepository($this->translationClass)->findBy([
-            'locale' => $locale,
-            'objectType' => $type,
-            'objectId' => $id,
-        ]);
 
-        $translationValues = [];
+                if ($this->cacheTtl) {
+                    $item->expiresAfter($this->cacheTtl);
+                }
 
-        foreach ($translations as $translation) {
-            $translationValues[$translation->field] = $translation->value;
-        }
+                /** @var Translation[] $translations */
+                $translations = $this->doctrine->getRepository($this->translationClass)->findBy([
+                    'locale' => $locale,
+                    'objectType' => $type,
+                    'objectId' => $id,
+                ]);
 
-        return $translationValues;
+                $translationValues = [];
+
+                foreach ($translations as $translation) {
+                    $translationValues[$translation->field] = $translation->value;
+                }
+
+                return $translationValues;
+            },
+        );
     }
 
 }

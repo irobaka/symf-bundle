@@ -1192,6 +1192,11 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  * }
  * @psalm-type SymfonObjectTranslationConfig = array{
  *     translation_class?: string|Param, // The class name of your translation entity
+ *     cache?: bool|array{ // Cache settings for object translations
+ *         enabled?: bool|Param, // Default: true
+ *         pool?: string|Param, // The cache pool to use for storing object translations // Default: "cache.app"
+ *         ttl?: int|Param, // The number of seconds to store object translations, null for no expiration // Default: null
+ *     },
  * }
  * @psalm-type ConfigType = array{
  *     imports?: ImportsConfig,
